@@ -28,7 +28,7 @@
     "enabled": true,
     "require_route": true,
     "api_base": "https://v6.db.transport.rest",
-    "origin_query": "Havelberg, Busbahnhof",
+    "origin_query": "Havelberg, Wasserturm",
     "origin_stop_id": "",
     "origin_latitude": 52.829,
     "origin_longitude": 12.075,
