@@ -1,0 +1,6 @@
+[
+  {"site":"indeed","title":"[DEMO] Junior Embedded Developer","company":"Синтетичний приклад A","location":"Stendal, Sachsen-Anhalt, Germany","job_url":"https://de.indeed.com/viewjob?jk=demo00001","description":"Embedded C, STM32, CMSIS-DSP. KiCad and PCB design. English B2. Teilzeit 30–35 Stunden pro Woche.","job_type":"parttime","date_posted":"2026-09-13"},
+  {"site":"indeed","title":"[DEMO] Firmware Engineer","company":"Синтетичний приклад B","location":"Berlin, Germany","job_url":"https://de.indeed.com/viewjob?jk=demo00002","description":"Firmware, STM32, embedded C. German B2 required. 40 hours per week.","job_type":"fulltime","date_posted":"2026-09-13"},
+  {"site":"linkedin","title":"[DEMO] Senior Embedded Engineer","company":"Синтетичний приклад C","location":"Magdeburg, Germany","job_url":"https://www.linkedin.com/jobs/view/99999990003","description":"Embedded C, STM32. 40 Stunden pro Woche.","job_type":"fulltime","date_posted":"2026-09-13"},
+  {"site":"indeed","title":"[DEMO] Werkstudent Firmware","company":"Синтетичний приклад D","location":"Berlin, Germany","job_url":"https://de.indeed.com/viewjob?jk=demo00004","description":"Firmware STM32. 20 Stunden pro Woche.","job_type":"parttime","date_posted":"2026-09-13"}
+]

@@ -1,0 +1,49 @@
+{
+  "sources": ["indeed"],
+  "search_terms": ["Junior Embedded Developer", "Embedded C", "STM32", "Firmware", "Hardwareentwickler"],
+  "search_areas": [
+    {"location": "Havelberg, Sachsen-Anhalt, Germany", "radius_km": 60},
+    {"location": "Berlin, Germany", "radius_km": 50},
+    {"location": "Magdeburg, Sachsen-Anhalt, Germany", "radius_km": 35}
+  ],
+  "hours_old": 72,
+  "results_per_query": 20,
+  "query_timeout_seconds": 60,
+  "collection_budget_seconds": 360,
+  "query_pause_seconds": 3,
+  "max_messages_per_run": 10,
+  "seen_retention_days": 90,
+  "filters": {
+    "local_radius_km": 60,
+    "weekly_hours_min": 30,
+    "weekly_hours_max": 60,
+    "allow_unknown_hours": true,
+    "part_time_only": false,
+    "include_student_roles": false,
+    "require_explicit_junior": false,
+    "exclude_explicit_german_above_a2": false,
+    "require_known_date": false
+  },
+  "transport": {
+    "enabled": true,
+    "require_route": true,
+    "api_base": "https://v6.db.transport.rest",
+    "origin_query": "Havelberg, Busbahnhof",
+    "origin_stop_id": "",
+    "origin_latitude": 52.829,
+    "origin_longitude": 12.075,
+    "work_start": "09:00",
+    "work_end": "17:00",
+    "earliest_leave_home": "05:30",
+    "latest_home": "21:00",
+    "home_to_stop_minutes": 10,
+    "station_to_work_minutes": 20,
+    "max_one_way_minutes_local": 120,
+    "max_one_way_minutes_corridor": 180,
+    "max_transfers": 3,
+    "allow_ice_ic": false,
+    "request_pause_seconds": 2,
+    "max_requests_per_run": 25,
+    "stop_overrides": {}
+  }
+}
