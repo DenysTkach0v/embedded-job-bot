@@ -26,7 +26,7 @@
   },
   "transport": {
     "enabled": true,
-    "require_route": true,
+    "require_route": false,
     "api_base": "https://v6.db.transport.rest",
     "origin_query": "Havelberg, Wasserturm",
     "origin_stop_id": "",
