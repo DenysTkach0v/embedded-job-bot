@@ -21,12 +21,14 @@ jobs:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
-      - uses: actions/setup-python@v6
+        - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
           cache: pip
+
       - name: Install dependencies
         run: python -m pip install --disable-pip-version-check -r requirements.txt
+
       - name: Check logic
         run: python -m unittest discover -s tests -v
       - name: Restore delivery history
