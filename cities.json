@@ -23,6 +23,5 @@
   {"name":"Falkensee","aliases":[],"lat":52.560,"lon":13.091,"stop":"Falkensee","corridor":true},
   {"name":"Berlin-Spandau","aliases":["Berlin Spandau","Spandau"],"lat":52.535,"lon":13.197,"stop":"Berlin-Spandau","corridor":true},
   {"name":"Berlin","aliases":[],"lat":52.520,"lon":13.405,"stop":"Berlin Hbf","corridor":true},
-  {"name":"Wolmirstedt","aliases":[],"lat":52.249,"lon":11.630,"stop":"Wolmirstedt","corridor":true},
-  {"name":"Magdeburg","aliases":[],"lat":52.131,"lon":11.639,"stop":"Magdeburg Hbf","corridor":true}
+  {"name":"Wolmirstedt","aliases":[],"lat":52.249,"lon":11.630,"stop":"Wolmirstedt","corridor":true}
 ]

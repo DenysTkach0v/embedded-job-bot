@@ -1,10 +1,18 @@
 {
-  "sources": ["indeed"],
-  "search_terms": ["Junior Embedded Developer", "Embedded C", "STM32", "Firmware", "Hardwareentwickler"],
+  "sources": ["indeed", "linkedin"],
+  "search_terms": [
+    "Junior Embedded Developer",
+    "Embedded C",
+    "STM32",
+    "Firmware Engineer",
+    "Arduino",
+    "STEM Tutor",
+    "Coding Instructor C++"
+  ],
   "search_areas": [
-    {"location": "Havelberg, Sachsen-Anhalt, Germany", "radius_km": 60},
     {"location": "Berlin, Germany", "radius_km": 50},
-    {"location": "Magdeburg, Sachsen-Anhalt, Germany", "radius_km": 35}
+    {"location": "Havelberg, Sachsen-Anhalt, Germany", "radius_km": 60},
+    {"location": "Remote, Germany", "radius_km": 50}
   ],
   "hours_old": 72,
   "results_per_query": 20,
@@ -14,8 +22,9 @@
   "max_messages_per_run": 10,
   "seen_retention_days": 90,
   "filters": {
+    "allow_remote": true,
     "local_radius_km": 60,
-    "weekly_hours_min": 30,
+    "weekly_hours_min": 5,
     "weekly_hours_max": 60,
     "allow_unknown_hours": true,
     "part_time_only": false,

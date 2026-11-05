@@ -15,6 +15,7 @@ import state_store
 class BotTests(unittest.TestCase):
     def setUp(self):
         self.config = bot.read_json(bot.ROOT / "config.json")
+        self.config["filters"]["weekly_hours_min"] = 30
         self.cities = bot.read_json(bot.ROOT / "cities.json")
         self.now = datetime(2026, 9, 13, 12, tzinfo=bot.BERLIN)
         self.row = {
@@ -52,14 +53,15 @@ class BotTests(unittest.TestCase):
         self.config["filters"]["include_student_roles"] = True
         self.assertIsNotNone(self.evaluate(title="Werkstudent Firmware")[0])
 
-    def test_real_location_not_search_or_mentions(self):
+    def test_real_location_and_remote_support(self):
         self.assertEqual(self.evaluate(location="München", description="STM32; our client in Berlin")[1], "unmapped_location")
         self.assertIsNotNone(self.evaluate(location="Berlin, Germany")[0])
+        self.assertIsNotNone(self.evaluate(location="Remote, Germany", title="Online Arduino Tutor")[0])
         self.assertEqual(bot.resolve_city("Berlin-Spandau", self.cities)["name"], "Berlin-Spandau")
         self.assertIsNone(bot.resolve_city("Berlinchen", self.cities))
         self.config["filters"]["local_radius_km"] = 10
         self.assertEqual(self.evaluate(location="Tangermünde")[1], "outside_region")
-        self.assertIsNotNone(self.evaluate(location="Magdeburg")[0])
+        self.assertIsNotNone(self.evaluate(location="Berlin")[0])
 
     def test_freshness_and_unknown_date(self):
         self.assertEqual(self.evaluate(date_posted="2020-01-01")[1], "outside_date_window")
@@ -73,6 +75,7 @@ class BotTests(unittest.TestCase):
         self.config["filters"]["exclude_explicit_german_above_a2"] = True
         self.assertEqual(self.evaluate(description="STM32. German B2 required.")[1], "german_above_a2")
         self.assertIsNotNone(self.evaluate(description="STM32. Deutsch A2, English B2.")[0])
+        self.assertIsNotNone(self.evaluate(description="STM32. Deutsch oder Englisch B2.")[0])
 
     def test_url_identity_and_validation(self):
         a = bot.canonical_url("https://www.indeed.com/rc/clk?jk=abcd1234&utm_source=email")
@@ -204,5 +207,3 @@ class TransportTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
-

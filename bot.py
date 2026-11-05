@@ -108,10 +108,27 @@ WEEKLY = re.compile(rf"(?:wochenarbeitszeit|weekly hours)\s*[:=]?\s*({NUMBER})(?
 SENIOR = re.compile(r"\b(senior|sr\.?|lead|principal|staff|head|director|manager|architect|teamleiter\w*|projektleiter\w*|leiter\w*)\b", re.I)
 STUDENT = re.compile(r"\b(werkstudent\w*|working student|studentische\w*|pflichtpraktikum|bachelorand\w*|masterand\w*)\b", re.I)
 JUNIOR = re.compile(r"\b(junior|jr\.?|entry[- ]level|graduate|berufseinsteiger\w*|absolvent\w*|trainee)\b", re.I)
-TECHNICAL = re.compile(r"embedded|firmware|stm32|hardware|electronic|elektronik|pcb|leiterplatten|software|entwickl|test|validation|verification|mikrocontroller", re.I)
-GERMAN_LEVEL = re.compile(r"(?:deutsch\w*|german)[^.;,\n]{0,35}?\b([abc][12])\b|\b([abc][12])\s*(?:niveau\s*)?(?:in\s+)?(?:deutsch|german)", re.I)
-GERMAN_FLUENT = re.compile(r"(?:flie(?:ss|ß)end\w*|verhandlungssicher\w*)\s+deutsch\w*|fluent\s+german", re.I)
-SKILLS = ["embedded", "embedded c", "firmware", "stm32", "cmsis", "cmsis-dsp", "kicad", "pcb", "leiterplatten", "mikrocontroller", "microcontroller", "hardwareentwicklung", "hardwareentwickler", "elektronikentwicklung", "electronics", "dsp", "rtos"]
+REMOTE = re.compile(r"\b(remote|home[- ]?office|work from home|anywhere|100%\s*remote|online|fernarbeit|telearbeit)\b", re.I)
+TECHNICAL = re.compile(
+    r"embedded|firmware|stm32|esp32|arduino|hardware|electronic|elektronik|pcb|leiterplatten|"
+    r"software|entwickl|test|validation|verification|mikrocontroller|microcontroller|"
+    r"c\+\+|iot|robotics|robotik|stem|mint|tutor|trainer|instructor|mentor|dozent|lehrer", re.I
+)
+GERMAN_LEVEL = re.compile(
+    r"(?:deutsch\w*|german)(?!\s*(?:oder|or|and|und|/)\s*(?:englisch\w*|english))[^.;,\n]{0,25}?\b([abc][12])\b|"
+    r"\b([abc][12])\s*(?:niveau\s*)?(?:in\s+)?(?:deutsch\w*|german)", re.I
+)
+GERMAN_FLUENT = re.compile(
+    r"(?:flie(?:ss|ß)end\w*|verhandlungssicher\w*|sehr\s+gut\w*)\s+deutsch\w*|"
+    r"deutsch\w*\s+(?:flie(?:ss|ß)end\w*|verhandlungssicher\w*)|"
+    r"fluent\s+(?:in\s+)?german", re.I
+)
+SKILLS = [
+    "embedded", "embedded c", "c++", "firmware", "stm32", "esp32", "arduino",
+    "cmsis", "cmsis-dsp", "freertos", "rtos", "dsp", "kicad", "pcb", "leiterplatten",
+    "mikrocontroller", "microcontroller", "hardwareentwicklung", "hardwareentwickler",
+    "elektronikentwicklung", "electronics", "wokwi", "tinkercad", "robotics", "stem"
+]
 
 
 def weekly_hours(text):
@@ -160,13 +177,20 @@ def evaluate_job(row, config, cities, now=None):
     if minimum and int(minimum[1]) > 2:
         return None, "experience_over_2"
     location = plain(row.get("location"))
+    is_remote = bool(REMOTE.search(norm(location + " " + title + " " + plain(row.get("job_type")))) or row.get("is_remote"))
     city = resolve_city(location, cities)
     if not city:
-        return None, "unmapped_location"
-    distance = distance_km(config["transport"]["origin_latitude"], config["transport"]["origin_longitude"], city["lat"], city["lon"])
-    local = distance <= filters["local_radius_km"]
-    if not local and not city["corridor"]:
-        return None, "outside_region"
+        if is_remote and filters.get("allow_remote", True):
+            city = {"name": "Remote", "lat": config["transport"]["origin_latitude"], "lon": config["transport"]["origin_longitude"], "stop": "", "corridor": True}
+            distance = 0.0
+            local = True
+        else:
+            return None, "unmapped_location"
+    else:
+        distance = distance_km(config["transport"]["origin_latitude"], config["transport"]["origin_longitude"], city["lat"], city["lon"])
+        local = distance <= filters["local_radius_km"]
+        if not local and not city["corridor"] and not (is_remote and filters.get("allow_remote", True)):
+            return None, "outside_region"
     hours = weekly_hours(text)
     if hours and not any(lo <= filters["weekly_hours_max"] and hi >= filters["weekly_hours_min"] for lo, hi in hours):
         return None, "hours_outside_range"
@@ -396,6 +420,8 @@ class Transport:
 
     def check(self, job):
         city = job["city"]
+        if city["name"] == "Remote":
+            return {"status": "ok", "text": "Формат: Remote / Онлайн (перевірка транспорту не потрібна)."}
         key = (city["name"], job["local"])
         if key in self.cache:
             return self.cache[key]
